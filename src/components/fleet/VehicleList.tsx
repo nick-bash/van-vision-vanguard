@@ -87,6 +87,11 @@ export const VehicleList: React.FC<VehicleListProps> = ({
       </CardHeader>
       
       <CardContent className="space-y-4">
+        {/* Mileage */}
+        <div className="flex justify-between text-sm">
+          <span className="text-muted-foreground">Mileage:</span>
+          <span className="font-medium">{vehicle.mileage.toLocaleString()} miles</span>
+        </div>
 
         {/* Custom Fields */}
         <div className="space-y-2">
