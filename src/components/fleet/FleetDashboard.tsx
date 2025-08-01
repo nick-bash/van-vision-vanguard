@@ -209,7 +209,7 @@ export const FleetDashboard: React.FC = () => {
 
       <div className="container mx-auto px-6 py-6">
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -236,19 +236,6 @@ export const FleetDashboard: React.FC = () => {
             </CardContent>
           </Card>
           
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">In Use</p>
-                  <p className="text-3xl font-bold text-warning">{statusCounts['in-use'] || 0}</p>
-                </div>
-                <div className="h-8 w-8 rounded-full bg-status-in-use/20 flex items-center justify-center">
-                  <div className="h-3 w-3 rounded-full bg-status-in-use" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
           
           <Card>
             <CardContent className="p-6">
@@ -265,7 +252,7 @@ export const FleetDashboard: React.FC = () => {
 
         {/* Main Content Tabs */}
         <Tabs defaultValue="vehicles" className="space-y-6">
-          <TabsList className="grid grid-cols-4 w-full max-w-2xl bg-muted">
+          <TabsList className="grid grid-cols-3 w-full max-w-2xl bg-muted">
             <TabsTrigger value="vehicles" className="flex items-center gap-2">
               <Car className="h-4 w-4" />
               Vehicles
@@ -277,10 +264,6 @@ export const FleetDashboard: React.FC = () => {
             <TabsTrigger value="reminders" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Reminders
-            </TabsTrigger>
-            <TabsTrigger value="reports" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Reports
             </TabsTrigger>
           </TabsList>
 
@@ -308,23 +291,6 @@ export const FleetDashboard: React.FC = () => {
             />
           </TabsContent>
 
-          <TabsContent value="reports">
-            <Card>
-              <CardHeader>
-                <CardTitle>Fleet Analytics</CardTitle>
-                <CardDescription>
-                  Comprehensive reports and analytics for your fleet
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-lg font-medium text-muted-foreground mb-2">Reports Coming Soon</p>
-                  <p className="text-sm text-muted-foreground">Advanced analytics and reporting features will be available here</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
 

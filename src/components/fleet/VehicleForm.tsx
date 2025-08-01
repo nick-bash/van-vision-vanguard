@@ -253,7 +253,6 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                       <div key={field.id} className="space-y-2">
                         <Label>
                           {field.name}
-                          {field.required && <span className="text-destructive ml-1">*</span>}
                         </Label>
                         
                         {field.type === 'text' && (

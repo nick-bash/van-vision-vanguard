@@ -298,7 +298,7 @@ export const RemindersPanel: React.FC<RemindersPanelProps> = ({
 
         <CardContent>
           {/* Summary Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
@@ -311,17 +311,6 @@ export const RemindersPanel: React.FC<RemindersPanelProps> = ({
               </CardContent>
             </Card>
             
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Pending</p>
-                    <p className="text-2xl font-bold text-warning">{incompleteReminders.length}</p>
-                  </div>
-                  <Clock className="h-6 w-6 text-warning" />
-                </div>
-              </CardContent>
-            </Card>
             
             <Card>
               <CardContent className="p-4">

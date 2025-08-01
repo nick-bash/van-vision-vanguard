@@ -9,11 +9,7 @@ import {
   Edit, 
   Trash2, 
   Search, 
-  Filter, 
-  Grid3X3, 
-  List,
-  Gauge,
-  FileText,
+  Filter,
   Calendar,
   User
 } from 'lucide-react';
@@ -59,7 +55,7 @@ export const VehicleList: React.FC<VehicleListProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  
 
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchesSearch = vehicle.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -82,9 +78,6 @@ export const VehicleList: React.FC<VehicleListProps> = ({
             </div>
             <div>
               <CardTitle className="text-lg">{vehicle.name}</CardTitle>
-              <CardDescription>
-                {vehicle.customFields.vehicleType || 'Vehicle'}
-              </CardDescription>
             </div>
           </div>
           <Badge className={statusConfig[vehicle.status].color}>
@@ -94,20 +87,6 @@ export const VehicleList: React.FC<VehicleListProps> = ({
       </CardHeader>
       
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
-            <Gauge className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">
-              {vehicle.mileage.toLocaleString()} miles
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">
-              {vehicle.documents.length} docs
-            </span>
-          </div>
-        </div>
 
         {/* Custom Fields */}
         <div className="space-y-2">
@@ -157,67 +136,6 @@ export const VehicleList: React.FC<VehicleListProps> = ({
     </Card>
   );
 
-  const VehicleRow = ({ vehicle }: { vehicle: Vehicle }) => (
-    <Card>
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="p-2 bg-primary/10 rounded-lg">
-              <Car className="h-5 w-5 text-primary" />
-            </div>
-            
-            <div className="flex-1 grid grid-cols-6 gap-4 items-center">
-              <div>
-                <p className="font-medium">{vehicle.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {vehicle.customFields.vehicleType || 'Vehicle'}
-                </p>
-              </div>
-              
-              <Badge className={statusConfig[vehicle.status].color}>
-                {statusConfig[vehicle.status].label}
-              </Badge>
-              
-              <div className="text-sm">
-                <span className="font-medium">{vehicle.mileage.toLocaleString()}</span>
-                <span className="text-muted-foreground"> miles</span>
-              </div>
-              
-              <div className="text-sm">
-                <span className="font-medium">{vehicle.documents.length}</span>
-                <span className="text-muted-foreground"> docs</span>
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                {vehicle.updatedBy}
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                {vehicle.lastUpdated}
-              </div>
-            </div>
-          </div>
-          
-          <div className="flex gap-2">
-            <Button
-              onClick={() => onEditVehicle(vehicle)}
-              variant="outline"
-              size="sm"
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
-            <Button
-              onClick={() => onDeleteVehicle(vehicle.id)}
-              variant="destructive"
-              size="sm"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
 
   return (
     <div className="space-y-6">
@@ -231,22 +149,6 @@ export const VehicleList: React.FC<VehicleListProps> = ({
               </CardDescription>
             </div>
             
-            <div className="flex items-center gap-2">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setViewMode('grid')}
-              >
-                <Grid3X3 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setViewMode('list')}
-              >
-                <List className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
           
           {/* Filters */}
@@ -295,16 +197,10 @@ export const VehicleList: React.FC<VehicleListProps> = ({
           </CardContent>
         </Card>
       ) : (
-        <div className={
-          viewMode === 'grid' 
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
-            : 'space-y-4'
-        }>
-          {filteredVehicles.map(vehicle => 
-            viewMode === 'grid' 
-              ? <VehicleCard key={vehicle.id} vehicle={vehicle} />
-              : <VehicleRow key={vehicle.id} vehicle={vehicle} />
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredVehicles.map(vehicle => (
+            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+          ))}
         </div>
       )}
     </div>
