@@ -30,11 +30,16 @@ interface Vehicle {
   updatedBy: string;
 }
 
+interface DropdownOption {
+  value: string;
+  color?: string;
+}
+
 interface CustomField {
   id: string;
   name: string;
   type: 'text' | 'number' | 'dropdown';
-  options?: string[];
+  options?: DropdownOption[];
   required: boolean;
 }
 
@@ -96,10 +101,32 @@ const mockVehicles: Vehicle[] = [
 ];
 
 const mockFields: CustomField[] = [
-  { id: '1', name: 'Vehicle Type', type: 'dropdown', options: ['Cargo Van', 'Delivery Van', 'Box Truck', 'Pickup Truck'], required: true },
+  { 
+    id: '1', 
+    name: 'Vehicle Type', 
+    type: 'dropdown', 
+    options: [
+      { value: 'Cargo Van', color: '#3b82f6' },
+      { value: 'Delivery Van', color: '#10b981' },
+      { value: 'Box Truck', color: '#f59e0b' },
+      { value: 'Pickup Truck', color: '#ef4444' }
+    ], 
+    required: true 
+  },
   { id: '2', name: 'License Plate', type: 'text', required: true },
   { id: '3', name: 'Year', type: 'number', required: false },
-  { id: '4', name: 'Fuel Type', type: 'dropdown', options: ['Gasoline', 'Diesel', 'Electric', 'Hybrid'], required: false }
+  { 
+    id: '4', 
+    name: 'Fuel Type', 
+    type: 'dropdown', 
+    options: [
+      { value: 'Gasoline', color: '#6366f1' },
+      { value: 'Diesel', color: '#8b5cf6' },
+      { value: 'Electric', color: '#06b6d4' },
+      { value: 'Hybrid', color: '#84cc16' }
+    ], 
+    required: false 
+  }
 ];
 
 const mockReminders: Reminder[] = [

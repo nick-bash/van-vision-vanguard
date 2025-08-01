@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
+import { HexColorPicker } from 'react-colorful';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { 
   Plus, 
   Edit, 
@@ -16,14 +18,20 @@ import {
   List,
   X,
   Save,
-  AlertCircle
+  AlertCircle,
+  Palette
 } from 'lucide-react';
+
+interface DropdownOption {
+  value: string;
+  color?: string;
+}
 
 interface CustomField {
   id: string;
   name: string;
   type: 'text' | 'number' | 'dropdown';
-  options?: string[];
+  options?: DropdownOption[];
   required: boolean;
 }
 
@@ -47,10 +55,11 @@ export const FieldManager: React.FC<FieldManagerProps> = ({
   const [formData, setFormData] = useState({
     name: '',
     type: 'text' as CustomField['type'],
-    options: [] as string[],
+    options: [] as DropdownOption[],
     required: false
   });
   const [newOption, setNewOption] = useState('');
+  const [newOptionColor, setNewOptionColor] = useState('#6366f1');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const resetForm = () => {
@@ -61,6 +70,7 @@ export const FieldManager: React.FC<FieldManagerProps> = ({
       required: false
     });
     setNewOption('');
+    setNewOptionColor('#6366f1');
     setErrors({});
     setEditingField(null);
   };
@@ -126,12 +136,13 @@ export const FieldManager: React.FC<FieldManagerProps> = ({
   };
 
   const addOption = () => {
-    if (newOption.trim() && !formData.options.includes(newOption.trim())) {
+    if (newOption.trim() && !formData.options.some(opt => opt.value === newOption.trim())) {
       setFormData(prev => ({
         ...prev,
-        options: [...prev.options, newOption.trim()]
+        options: [...prev.options, { value: newOption.trim(), color: newOptionColor }]
       }));
       setNewOption('');
+      setNewOptionColor('#6366f1');
       if (errors.options) {
         setErrors(prev => ({ ...prev, options: '' }));
       }
@@ -224,9 +235,19 @@ export const FieldManager: React.FC<FieldManagerProps> = ({
                         <div className="space-y-2">
                           <p className="text-xs text-muted-foreground">Options:</p>
                           <div className="flex flex-wrap gap-1">
-                            {field.options.slice(0, 3).map(option => (
-                              <Badge key={option} variant="outline" className="text-xs">
-                                {option}
+                            {field.options.slice(0, 3).map((option, index) => (
+                              <Badge 
+                                key={index} 
+                                variant="outline" 
+                                className="text-xs flex items-center gap-1"
+                              >
+                                {option.color && (
+                                  <div 
+                                    className="w-2 h-2 rounded-full" 
+                                    style={{ backgroundColor: option.color }}
+                                  />
+                                )}
+                                {option.value}
                               </Badge>
                             ))}
                             {field.options.length > 3 && (
@@ -322,32 +343,62 @@ export const FieldManager: React.FC<FieldManagerProps> = ({
                 {formData.type === 'dropdown' && (
                   <div className="space-y-2">
                     <Label>Options *</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={newOption}
-                        onChange={(e) => setNewOption(e.target.value)}
-                        placeholder="Add an option"
-                        onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
-                            addOption();
-                          }
-                        }}
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={addOption}
-                      >
-                        Add
-                      </Button>
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <Input
+                          value={newOption}
+                          onChange={(e) => setNewOption(e.target.value)}
+                          placeholder="Add an option"
+                          className="flex-1"
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              addOption();
+                            }
+                          }}
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              className="shrink-0"
+                            >
+                              <div 
+                                className="w-4 h-4 rounded" 
+                                style={{ backgroundColor: newOptionColor }}
+                              />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-3" align="end">
+                            <HexColorPicker 
+                              color={newOptionColor} 
+                              onChange={setNewOptionColor} 
+                            />
+                          </PopoverContent>
+                        </Popover>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={addOption}
+                        >
+                          Add
+                        </Button>
+                      </div>
                     </div>
                     
                     {formData.options.length > 0 && (
                       <div className="space-y-2 max-h-32 overflow-y-auto">
                         {formData.options.map((option, index) => (
                           <div key={index} className="flex items-center justify-between p-2 bg-muted rounded">
-                            <span className="text-sm">{option}</span>
+                            <div className="flex items-center gap-2">
+                              <div 
+                                className="w-3 h-3 rounded-full border" 
+                                style={{ backgroundColor: option.color }}
+                              />
+                              <span className="text-sm">{option.value}</span>
+                            </div>
                             <Button
                               type="button"
                               variant="ghost"

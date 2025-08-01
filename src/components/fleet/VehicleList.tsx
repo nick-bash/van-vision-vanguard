@@ -25,11 +25,16 @@ interface Vehicle {
   updatedBy: string;
 }
 
+interface DropdownOption {
+  value: string;
+  color?: string;
+}
+
 interface CustomField {
   id: string;
   name: string;
   type: 'text' | 'number' | 'dropdown';
-  options?: string[];
+  options?: DropdownOption[];
   required: boolean;
 }
 
@@ -99,10 +104,30 @@ export const VehicleList: React.FC<VehicleListProps> = ({
             const value = vehicle.customFields[field.name];
             if (!value) return null;
             
+            // For dropdown fields, find the option with color
+            let displayValue = value;
+            let optionColor: string | undefined;
+            
+            if (field.type === 'dropdown' && field.options) {
+              const option = field.options.find(opt => opt.value === value);
+              if (option) {
+                displayValue = option.value;
+                optionColor = option.color;
+              }
+            }
+            
             return (
               <div key={field.id} className="flex justify-between text-sm">
                 <span className="text-muted-foreground">{field.name}:</span>
-                <span className="font-medium">{value}</span>
+                <span className="font-medium flex items-center gap-2">
+                  {optionColor && (
+                    <div 
+                      className="w-2 h-2 rounded-full" 
+                      style={{ backgroundColor: optionColor }}
+                    />
+                  )}
+                  {displayValue}
+                </span>
               </div>
             );
           })}

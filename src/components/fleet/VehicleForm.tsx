@@ -26,11 +26,16 @@ interface Vehicle {
   updatedBy: string;
 }
 
+interface DropdownOption {
+  value: string;
+  color?: string;
+}
+
 interface CustomField {
   id: string;
   name: string;
   type: 'text' | 'number' | 'dropdown';
-  options?: string[];
+  options?: DropdownOption[];
   required: boolean;
 }
 
@@ -283,9 +288,17 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                               <SelectValue placeholder={`Select ${field.name.toLowerCase()}`} />
                             </SelectTrigger>
                             <SelectContent>
-                              {field.options.map(option => (
-                                <SelectItem key={option} value={option}>
-                                  {option}
+                              {field.options.map((option, index) => (
+                                <SelectItem key={index} value={option.value}>
+                                  <div className="flex items-center gap-2">
+                                    {option.color && (
+                                      <div 
+                                        className="w-3 h-3 rounded-full" 
+                                        style={{ backgroundColor: option.color }}
+                                      />
+                                    )}
+                                    {option.value}
+                                  </div>
                                 </SelectItem>
                               ))}
                             </SelectContent>
