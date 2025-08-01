@@ -226,7 +226,7 @@ export const FleetDashboard: React.FC = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Available</p>
+                  <p className="text-sm font-medium text-muted-foreground">Active</p>
                   <p className="text-3xl font-bold text-success">{statusCounts.available || 0}</p>
                 </div>
                 <div className="h-8 w-8 rounded-full bg-status-available/20 flex items-center justify-center">
