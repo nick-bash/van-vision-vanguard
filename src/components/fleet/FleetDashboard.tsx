@@ -241,7 +241,7 @@ export const FleetDashboard: React.FC = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Pending Reminders</p>
+                  <p className="text-sm font-medium text-muted-foreground">Reminders Due</p>
                   <p className="text-3xl font-bold text-destructive">{pendingReminders}</p>
                 </div>
                 <AlertCircle className="h-8 w-8 text-destructive" />
